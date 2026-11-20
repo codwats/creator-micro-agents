@@ -130,4 +130,4 @@ Only the Rex-specific parts need replacing. The firmware and the HID color comma
 
 ## License
 
-The firmware keymap and patch build on [QMK](https://github.com/qmk/qmk_firmware), which is GPL-2.0, so they are GPL-2.0 too. If you share the `.hex`, share this source with it.
+Everything outside `firmware/` is under the MIT license (see [LICENSE](LICENSE)). The firmware keymap and patch build on [QMK](https://github.com/qmk/qmk_firmware), so they are GPL-2.0-or-later. If you share the `.hex`, share this source with it.
