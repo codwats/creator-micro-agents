@@ -26,14 +26,14 @@ The board also has a basics layer, a design layer (InDesign and Illustrator) and
 | `firmware/work_louder_micro_agents.hex` | Prebuilt firmware |
 | `via/creator_micro.agents.layout.json` | The VIA layout: all four layers, encoders and macros |
 | `rex/init.lua` | Rex shortcuts, plus the `goto_blocked` action used by the wheel click |
-| `status/` | `status.py`, which watches Rex and colors the board, and a launchd plist to start it at login |
+| `status/` | `status.py`, which watches Rex and colors the board. Also a launchd plist (macOS) or systemd unit (Linux) to start it at login, and a udev rule (Linux). |
 | `KEYMAP.md` | The full key reference |
 | `AGENTS.md` | Notes for AI agents helping you install or change this |
 
 ## Requirements
 
 - Work Louder Creator Micro **v1** (USB ID `574C:E6E3`)
-- macOS. The status script and launchd setup are macOS-specific.
+- macOS or Linux. Linux support is untested. See [Linux](#linux).
 - [Rex](https://www.superlogical.com/rex), with agents that report status, such as Claude Code
 - `dfu-programmer` (`brew install dfu-programmer`)
 - Python 3, for the status lights
@@ -96,6 +96,29 @@ To start it at login, copy `status/creator-micro-status.plist` to `~/Library/Lau
 ```sh
 launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/creator-micro-status.plist
 ```
+
+### Linux
+
+Linux support is **untested**. The firmware, the layout and the Rex config don't depend on the operating system. Three things change:
+
+1. **Permissions:** install the udev rule so your user can reach the board and its bootloader without root:
+
+   ```sh
+   sudo cp status/99-creator-micro.rules /etc/udev/rules.d/
+   sudo udevadm control --reload && sudo udevadm trigger
+   ```
+
+   Then unplug the board and plug it back in.
+2. **Finding the board:** nothing to do. `status.py` looks for the VIA raw-HID interface by usage page. If the HID backend reports no usage page, which libusb often does on Linux, it falls back to USB interface 1.
+3. **Start at login:** use the systemd user service instead of launchd. Fill in `INSTALL_DIR` and `REX_BIN_DIR` in `status/creator-micro-status.service`, then run:
+
+   ```sh
+   cp status/creator-micro-status.service ~/.config/systemd/user/
+   systemctl --user daemon-reload && systemctl --user enable --now creator-micro-status
+   journalctl --user -u creator-micro-status -f   # watch its output
+   ```
+
+Install `dfu-programmer` for flashing from your package manager.
 
 ## Build the firmware yourself
 

@@ -27,7 +27,8 @@ def worst():
 def send(state):
     _, h, s, v = COLORS[state]
     for d in hid.enumerate(0x574c, 0xe6e3):
-        if d['usage_page'] == 0xff60 and d['usage'] == 0x61:
+        # VIA raw HID: usage page 0xFF60. Linux's libusb backend reports usage 0, so fall back to interface 1.
+        if (d['usage_page'], d['usage']) == (0xff60, 0x61) or (d['usage_page'] == 0 and d['interface_number'] == 1):
             dev = hid.device(); dev.open_path(d['path'])
             dev.write(bytes([0, 0x42, h, s, v]).ljust(33, b'\0')); dev.close(); return
 

@@ -1,0 +1,16 @@
+# systemd user service for Linux. Replace INSTALL_DIR with the absolute path to this status/ folder
+# and REX_BIN_DIR with the folder that holds rex (`dirname $(which rex)`).
+# Install: cp creator-micro-status.service ~/.config/systemd/user/
+#          systemctl --user daemon-reload && systemctl --user enable --now creator-micro-status
+[Unit]
+Description=Creator Micro agent status lights
+
+[Service]
+WorkingDirectory=INSTALL_DIR
+ExecStart=INSTALL_DIR/.venv/bin/python INSTALL_DIR/status.py
+Environment=PATH=REX_BIN_DIR:/usr/local/bin:/usr/bin:/bin
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

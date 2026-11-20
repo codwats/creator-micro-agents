@@ -25,6 +25,7 @@ You can also write keys straight to the board over VIA raw HID, with no reload i
 
 - **Read back** every write and compare it to what you sent. Then update the layout JSON and KEYMAP.md to match.
 - **Grid:** rows and columns are the physical 4×4 grid, starting at 0. Encoder 0 is the wheel (top-left) and encoder 1 is the knob (top-right).
+- **Linux:** the raw-HID interface is USB interface 1. On Linux the libusb backend reports usage page 0, so match on the interface instead. A device that won't open without root needs `status/99-creator-micro.rules`.
 - **Close the HID handle** when you're done. A process that keeps it open makes every other open fail with "open failed".
 
 ## Debugging

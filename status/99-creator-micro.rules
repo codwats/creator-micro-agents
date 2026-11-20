@@ -1,0 +1,9 @@
+# Lets your user talk to the Creator Micro without root (status lights, VIA, flashing).
+# Install: sudo cp 99-creator-micro.rules /etc/udev/rules.d/ && sudo udevadm control --reload && sudo udevadm trigger
+# Then unplug and replug the board.
+
+# Keyboard, raw HID (hidraw and libusb backends)
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="574c", ATTRS{idProduct}=="e6e3", TAG+="uaccess"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="574c", ATTRS{idProduct}=="e6e3", TAG+="uaccess"
+# ATmega32U4 DFU bootloader, for dfu-programmer
+SUBSYSTEM=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2ff4", TAG+="uaccess"
