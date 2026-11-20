@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copy to ~/Library/LaunchAgents/, replace INSTALL_DIR with the absolute path to this status/ folder,
+     and REX_BIN_DIR with the folder that holds rex (`dirname $(which rex)`). -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>Label</key><string>creator-micro-status</string>
+<key>ProgramArguments</key><array>
+<string>INSTALL_DIR/.venv/bin/python</string><string>INSTALL_DIR/status.py</string></array>
+<key>WorkingDirectory</key><string>INSTALL_DIR</string>
+<key>EnvironmentVariables</key><dict><key>PATH</key><string>REX_BIN_DIR:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin</string></dict>
+<key>RunAtLoad</key><true/><key>KeepAlive</key><true/>
+<key>StandardOutPath</key><string>/tmp/creator-micro-status.log</string>
+<key>StandardErrorPath</key><string>/tmp/creator-micro-status.log</string>
+</dict></plist>
